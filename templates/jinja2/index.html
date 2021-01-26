@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Navia Life Care Assignment</title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1 align="center">Navia Life Care Assignment</h1>
+            </div>
+
+            <div class="border border-dark">
+                <form enctype="multipart/form-data" method="post" id="import_form" action="import">
+                    {% csrf_token %}
+                    <h5 align="center">Import your CSV to add more data</h5>
+                    <div class="form-group" align="center">
+                        <label>
+                            <input type="file" class="form-control-file" name="csv_file" id="csv_file"/>
+                            <button type="submit" class="btn btn-primary" id="import_csv_btn">Upload</button>
+                        </label>
+
+
+
+                    </div>
+                </form>
+
+            </div>
+            <br>
+
+            <div class="border border-white">
+                <div class="form-group" align="center">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" id="medicine_name" placeholder="Search for medicine name"/>
+                    <button type="submit" class="btn btn-primary" onclick="search();" >Search</button>
+                </div>
+            </div>
+
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"><strong>#</strong></th>
+                    <th scope="col"><strong>SKU ID</strong></th>
+                    <th scope="col"><strong>PRODUCT ID</strong></th>
+                    <th scope="col"><strong>SKU NAME</strong></th>
+                    <th scope="col"><strong>MANUFACTURER NAME</strong></th>
+                    <th scope="col"><strong>SALT NAME</strong></th>
+                    <th scope="col"><strong>PACK SIZE</strong></th>
+                    <th scope="col"><strong>PRICE</strong></th>
+                    <th scope="col"><strong>DRUG FORM</strong></th>
+                    <th scope="col"><strong>STRENGTH</strong></th>
+                    <th scope="col"><strong>UNIT Available</strong></th>
+                    <th scope="col"><strong>PRICE PER UNIT</strong></th>
+                    <th scope="col"><strong>PRODUCT BANNED</strong></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in data %}
+                <tr>
+                    <td scope="row">{{ data.id }}</td>
+
+                    {% if data.sku_id is None %}
+                    <td scope="row" class="bg-secondary text-white">-</td>
+                    {% else %}
+                    <td scope="row">{{ data.sku_id }}</td>
+                    {% endif %}
+
+                    {% if data.product_id is None %}
+                    <td scope="row" class="bg-secondary text-white">-</td>
+                    {% else %}
+                    <td scope="row">{{ data.product_id }}</td>
+                    {% endif %}
+
+                    <td scope="row">{{ data.sku_name }}</td>
+                    <td scope="row">{{ data.manufacturer_name }}</td>
+                    <td scope="row">{{ data.salt_name }}</td>
+                    <td scope="row">{{ data.pack_size }}</td>
+                    <td scope="row">{{ data.price }}</td>
+                    <td scope="row">{{ data.drug_form }}</td>
+                    <td scope="row">{{ data.strength }}</td>
+
+                    {% if data.unit is None %}
+                    <td scope="row" class="bg-secondary text-white">-</td>
+                    {% else %}
+                    <td scope="row">{{ data.unit }}</td>
+                    {% endif %}
+
+
+                    {% if data.price_per_unit is None %}
+                    <td scope="row" class="bg-secondary text-white">-</td>
+                    {% else %}
+                    <td scope="row">{{ data.price_per_unit }}</td>
+                    {% endif %}
+
+
+                    {% if data.product_banned_flag == True %}
+                    <td scope="row" class="bg-danger text-white">Yes</td>
+                    {% elif data.product_banned_flag is None %}
+                    <td scope="row" class="bg-secondary text-white">-</td>
+                    {% else %}
+                    <td scope="row" class="bg-success text-white">No</td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+        <footer class="footer">
+            <hr>
+            <div class="container" align="center">
+                <p class="text-muted">Assignment submitted by Harshit Gupta</p>
+            </div>
+        </footer>
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function search() {
+                var medicine_name = $("#medicine_name").val();
+                window.location.href="/medicine/home?medicine_name="+medicine_name;
+            }
+
+
+            function import_csv() {
+                var fd = new FormData();
+                var files = $('#csv_file')[0].files;
+
+                // Check file selected or not
+                if(files.length > 0 ){
+                   fd.append('file',files[0]);
+                   $.ajax({
+                    url: '/medicine/import',
+                    type: post,
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        if(response != 0){
+                            alert('File uploaded successfully!');
+                            console.log("File uploaded");
+                        }else{
+                            alert('file not uploaded');
+                        }
+                    },
+                   });
+               } else{
+                alert("Please select a file.");
+               }
+            }
+        </script>
+    </body>
+</html>
